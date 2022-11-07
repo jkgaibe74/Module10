@@ -1,0 +1,160 @@
+
+#                                                 From our textbook, Introductory Statistics with R pp. 159 Exercises 9.1 & 9.2
+
+#                                               9.1. I revised this question, so please follow my description only. Conduct ANOVA 
+#                                       (analysis of variance) and Regression coefficients to the data from cystfibr (> data (" cystfibr ") database. 
+#                                     You can choose any variable you like. in your report, you need to state the result of Coefficients (intercept) 
+#                         to any variables you like both under ANOVA and multivariate analysis. I am specifically looking at your interpretation of R results. 
+
+
+# 9.1
+
+
+install.packages("ISwR")
+library(ISwR)
+data("cystfibr")
+cystfibr
+
+summary(lm(pemax ~ age + weight + bmp + fev1, data = cystfibr))
+
+
+#results 
+Call:
+  lm(formula = pemax ~ age + weight + bmp + fev1, data = cystfibr)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-42.521 -10.885   3.003  15.488  41.767 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept) 179.2957    61.8855   2.897  0.00891 **
+age          -3.4181     3.3086  -1.033  0.31389   
+weight        2.6882     1.1727   2.292  0.03287 * 
+bmp          -2.0657     0.8198  -2.520  0.02036 * 
+fev1          1.0882     0.5139   2.117  0.04695 * 
+  ---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 23.4 on 20 degrees of freedom
+Multiple R-squared:  0.5918,	Adjusted R-squared:  0.5101 
+F-statistic: 7.248 on 4 and 20 DF,  p-value: 0.0008891
+
+# Interpretation of R results.
+
+# Looking at the results above, the estimate value of Intercept is precisely at 179.2957 with a P-Value of 0.00891. with this result it is less than the significance level of 1%.
+# Results of the Significant P-value indicates that it cannot reach the significance level thus it rejects the null hypothesis. 
+# The estimate value of age is -3.4181 and P-value is 0.31389, shows that in order for a a unit change in variable age, the p-value has to be greater than 0.05.
+# Estimate value of weight is 2.6882 and P-value is 0.03287, this result indicates that for a unit change in variable weight changes when units in dependent variable pemax with p-value is lesser than 0.05.
+# in order for a unit change in variable bmp of -2.0657, p-value has to be less than 0.05.
+# p-value of fev1 is less than 0.05, less than the signifcance lv of 5%.  
+
+
+anovamodel <- (lm(pemax ~ age + weight + bmp + fev1, data = cystfibr)) # setting anova code
+anova(anovamodel)
+
+#results
+Analysis of Variance Table
+
+Response: pemax
+          Df  Sum Sq Mean Sq F value    Pr(>F)    
+age        1 10098.5 10098.5 18.4385 0.0003538 ***
+weight     1   945.2   945.2  1.7258 0.2038195    
+bmp        1  2379.7  2379.7  4.3450 0.0501483 .  
+fev1       1  2455.6  2455.6  4.4836 0.0469468 *  
+  Residuals 20 10953.7   547.7                      
+---
+  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# Interpretation of ANOVA R results.
+
+#On variable age, the ANOVA results of the p-value is 0.0003538. Indicates that it is less than 1% of the significance level, thus rejecting null hypothesis with the dependent variable pemax that is not equal to 0
+#The P-value of the variable weight is greater than the significance level, thus not rejecting the null hypothesis and acknowledge the coefficient of variable pemax is equal to 0
+#p-value of both bmp and fev1 is less than or equal to the significance level of 0.05, indicating the both rejects the null hypothesis. 
+
+#9.2
+
+library("ISwR")
+data("secher")
+dataframe <- secher
+summary(lm(log(bwt) ~ I (log(ad)), data = dataframe)) # MODEL SUMMARY OF ad
+#RESULT
+
+Call:
+  lm(formula = log(bwt) ~ I(log(ad)), data = dataframe)
+
+Residuals:
+  Min       1Q   Median       3Q      Max 
+-0.58560 -0.06609  0.00184  0.07479  0.48435 
+
+Coefficients:
+  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -2.4446     0.5103  -4.791 5.49e-06 ***
+  I(log(ad))    2.2365     0.1105  20.238  < 2e-16 ***
+  ---
+  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1275 on 105 degrees of freedom
+Multiple R-squared:  0.7959,	Adjusted R-squared:  0.794 
+F-statistic: 409.6 on 1 and 105 DF,  p-value: < 2.2e-16
+
+summary(lm(log(bwt) ~ I (log(bpd)), data = dataframe)) # MODEL SUMMARY OF bpd
+#RESULT
+
+Call:
+  lm(formula = log(bwt) ~ I(log(bpd)), data = dataframe)
+
+Residuals:
+  Min       1Q   Median       3Q      Max 
+-0.36478 -0.09725  0.01251  0.07703  0.51154 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -7.0862     0.9062  -7.819 4.35e-12 ***
+I(log(bpd))   3.3320     0.2017  16.516  < 2e-16 ***
+  ---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1488 on 105 degrees of freedom
+Multiple R-squared:  0.7221,	Adjusted R-squared:  0.7194 
+F-statistic: 272.8 on 1 and 105 DF,  p-value: < 2.2e-16
+
+model10 <- lm(log(bwt) ~ I (log(ad)) + I(log(bpd)), data = dataframe ) #Summary of both ad and bpd
+summary(model10)
+
+Call:
+  lm(formula = log(bwt) ~ I(log(ad)) + I(log(bpd)), data = dataframe)
+
+Residuals:
+      Min       1Q   Median       3Q      Max 
+-0.35074 -0.06741 -0.00792  0.05750  0.36360 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -5.8615     0.6617  -8.859 2.36e-14 ***
+I(log(ad))    1.4667     0.1467   9.998  < 2e-16 ***
+I(log(bpd))   1.5519     0.2294   6.764 8.09e-10 ***
+  ---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.1068 on 104 degrees of freedom
+Multiple R-squared:  0.8583,	Adjusted R-squared:  0.8556 
+F-statistic: 314.9 on 2 and 104 DF,  p-value: < 2.2e-16
+
+
+# Can this be given a nice interpretation to our analysis?
+
+# by using both variables, the result of  Rsquare  indicates that the result increases to 0.8583 from previous 79.5 and 72.2 when ad and bpd is predicted individually.
+# thus both abdominal diameter and bipartial diameter are good predictor for birth weight. 
+# the sum of two regression coefficients is almost identical and equal to 3 
+
+
+
+
+
+
+
+
+
+
+
